@@ -273,9 +273,9 @@
 
 
     $(function(){
-        mobileMenuOutsideClick();
-        offcanvasMenu();
-        burgerMenu();
+        // mobileMenuOutsideClick();
+        // offcanvasMenu();
+        // burgerMenu();
         contentWayPoint();
         dropdown();
         testimonialCarousel();
