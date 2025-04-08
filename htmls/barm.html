@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>درخواست درست کردن انواع برنامه</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+            background: linear-gradient(135deg, #00c853, #0091ea);
+            color: white;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin: auto;
+        }
+        input, textarea {
+            width: 90%;
+            padding: 10px;
+            margin: 10px auto;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: right;
+            display: block;
+        }
+        textarea {
+            height: 80px;
+            resize: none;
+        }
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .radio-group label {
+            cursor: pointer;
+        }
+        button {
+            width: 95%;
+            padding: 12px;
+            font-size: 18px;
+            background: #ffeb3b;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #fdd835;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <h2>فرم ارسال اطلاعات</h2>
+    <h1 style="color: red;">توجه ! توجه !</h1>
+    <h2 style="color: black;">لطفا برای این مرحله حتما VPN خود را روشن کنید تا مشکلی پیش نیاید.</h2>
+    <div class="container">
+        <input type="text" id="name" placeholder="نام را وارد کنید (فارسی) ">
+        <input type="text" id="lastname" placeholder="نام خانوادگی را وارد کنید (فارسی)">
+        <input type="email" id="email" placeholder="ایمیل را وارد کنید">
+        <input type="tel" id="phone" placeholder="شماره تماس را وارد کنید">
+        <input type="text" id="name_en" placeholder="نام (انگلیسی)">
+        <input type="text" id="lastname_en" placeholder="نام خانوادگی (انگلیسی)">
+        <input type="text" id="telegram_id" placeholder="آیدی تلگرام (اختیاری)">
+        <textarea id="message" placeholder="نوع , نام , مشخصات و هر توضیحی که میدانید برای برنامه موبایل لازم است وارد کنید"></textarea>
+    <h2>روش ارتباط ما با شما را انتخاب کنید</h2>
+        <div class="radio-group">
+            <label><input type="radio" name="contact_method" value="تماس" checked> 📞 تماس</label>
+            <label><input type="radio" name="contact_method" value="پیام"> 💬 پیام</label>
+            <label><input type="radio" name="contact_method" value="ایمیل"> ✉️ ایمیل</label>
+            <label><input type="radio" name="contact_method" value="تلگرام"> 📱 تلگرام </label>
+        </div>
+
+        <button onclick="sendToTelegram()">ارسال</button>
+    </div>
+
+    <script>
+        function sendToTelegram() {
+            let name = document.getElementById("name").value;
+            let lastname = document.getElementById("lastname").value;
+            let email = document.getElementById("email").value;
+            let phone = document.getElementById("phone").value;
+            let name_en = document.getElementById("name_en").value;
+            let lastname_en = document.getElementById("lastname_en").value;
+            let telegramId = document.getElementById("telegram_id").value;
+            let message = document.getElementById("message").value;
+            let contactMethod = document.querySelector('input[name="contact_method"]:checked').value;
+
+            if (!name || !lastname || !email || !phone || !name_en || !lastname_en || !message) {
+                alert("لطفاً همه فیلدها را پر کنید.");
+                return;
+            }
+
+            let botToken = "7851763243:AAEKxm55yC3PelOQKsDl3tD_LRVkbzN1ggk";
+            let chatId = "7650517255"; // چت آیدی خودت
+
+            let text = `🔹 نوع درخواست: برنامه موبایل\n🔹 نام: ${name} ${lastname}\n🔹 ایمیل: ${email}\n🔹 شماره تماس: ${phone}\n🔹 نام (انگلیسی): ${name_en} ${lastname_en}\n🔹 روش ارتباط: ${contactMethod}\n📩 پیام: ${message}`;
+            
+            if (telegramId) {
+                text += `\n🔹 آیدی تلگرام: ${telegramId}`;
+            }
+            let url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert("✅ اطلاعات با موفقیت ارسال شد تا 72 ساعت آینده به شما جواب خواهیم داد!");
+                    } else {
+                        alert("❌ مشکلی پیش آمد، لطفاً دوباره امتحان کنید!");
+                    }
+                })
+                .catch(error => alert("❌ مشکلی پیش آمد، لطفاً دوباره امتحان کنید!"));
+        }
+    </script>
+
+</body>
+</html>
