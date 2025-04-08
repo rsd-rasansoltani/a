@@ -121,7 +121,7 @@
         msg.innerText = "ایمیل تایید برای شما ارسال شد. لطفاً ایمیل خود را چک کنید و سپس وارد شوید.";
         toggleForm(true);
       } catch (error) {
-        msg.innerText = error.message;
+        msg.innerText = mapFirebaseError(error.code);
       }
     };
 
@@ -137,7 +137,7 @@
           msg.innerText = "لطفاً ابتدا ایمیل خود را تایید کنید.";
         }
       } catch (error) {
-        msg.innerText = error.message;
+        msg.innerText = mapFirebaseError(error.code);
       }
     };
 
@@ -150,12 +150,10 @@
       document.querySelector(".toggle").innerText = isLogin ? "حساب ندارید؟ ثبت‌نام کنید" : "قبلاً ثبت‌نام کرده‌اید؟ وارد شوید";
     };
 
-    // نمایش فرم فراموشی رمز عبور
     window.showForgotPassword = () => {
       document.getElementById("forgot-password-form").style.display = "block";
     };
 
-    // ارسال لینک بازیابی رمز عبور
     window.sendPasswordResetLink = async () => {
       const email = document.getElementById("forgot-email").value;
       const msg = document.getElementById("forgot-password-message");
@@ -164,9 +162,28 @@
         msg.style.color = "green";
         msg.innerText = "لینک بازیابی رمز عبور به ایمیل شما ارسال شد.";
       } catch (error) {
-        msg.innerText = error.message;
+        msg.innerText = mapFirebaseError(error.code);
       }
     };
+
+    function mapFirebaseError(code) {
+      switch (code) {
+        case "auth/invalid-login-credentials":
+        case "auth/user-not-found":
+        case "auth/wrong-password":
+          return "❌ ایمیل یا رمز عبور اشتباه است.";
+        case "auth/email-already-in-use":
+          return "⚠️ این ایمیل قبلاً ثبت شده است.";
+        case "auth/weak-password":
+          return "رمز عبور باید حداقل ۶ کاراکتر باشد.";
+        case "auth/too-many-requests":
+          return "⛔ تلاش‌های زیاد! لطفاً بعداً امتحان کنید.";
+        case "auth/invalid-email":
+          return "📧 ایمیل وارد شده معتبر نیست.";
+        default:
+          return "خطا: " + code;
+      }
+    }
   </script>
 </body>
 </html>
