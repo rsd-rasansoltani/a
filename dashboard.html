@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>داشبورد - Rasan Design</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Vazirmatn', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    header {
+      background: #0d6efd;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .logout-btn {
+      background: #dc3545;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .logout-btn:hover {
+      background: #c82333;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        margin: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎉 خوش آمدید به پنل کاربری راسان دیزاین</h1>
+    <h2>متسفانه این صحفه هنوز درست نشده است و هنوز امکان استفاده از امکانات ما به صورت وب وجود ندارد.</h2>
+    <h4>جهت استفاده از خدمات ما تماس بگیرید (09032047444)</h4>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2 id="welcome-msg">در حال بارگذاری اطلاعات کاربر...</h2>
+      <button class="logout-btn" onclick="logout()">خروج از حساب</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD_Zyp4-it4jqoDDKoHQYkJZcW6wpgzNIw",
+      authDomain: "rasandesign-c13b0.firebaseapp.com",
+      projectId: "rasandesign-c13b0",
+      storageBucket: "rasandesign-c13b0.appspot.com",
+      messagingSenderId: "704936216056",
+      appId: "1:704936216056:web:xxxxxx"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (user && user.emailVerified) {
+        document.getElementById("welcome-msg").innerText =
+          `سلام ${user.email} 👋 خوش اومدی!`;
+      } else {
+        // اگر کاربر وارد نشده یا ایمیل تایید نشده
+        window.location.href = "/login.html";
+      }
+    });
+
+    window.logout = () => {
+      signOut(auth).then(() => {
+        window.location.href = "/index.html";
+      });
+    };
+  </script>
+</body>
+</html>

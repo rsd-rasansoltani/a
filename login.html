@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ورود / ثبت‌نام - RasanDesign</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Vazirmatn', sans-serif;
+    }
+    body {
+      margin: 0;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+    }
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      background-color: #0066ff;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    button:hover {
+      background-color: #0051cc;
+    }
+    .toggle {
+      text-align: center;
+      margin-top: 1rem;
+      color: #0066ff;
+      cursor: pointer;
+    }
+    p {
+      color: red;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 480px) {
+      .container {
+        padding: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="form-title">ورود</h2>
+
+    <input type="email" id="email" placeholder="ایمیل" />
+    <input type="password" id="password" placeholder="رمز عبور" />
+    <button onclick="handleLogin()" id="login-btn">ورود</button>
+    <button onclick="handleSignup()" id="signup-btn" style="display:none">ارسال لینک تایید</button>
+    <p id="message"></p>
+
+    <div class="toggle" onclick="toggleForm()">حساب ندارید؟ ثبت‌نام کنید</div>
+
+    <!-- فراموشی رمز عبور -->
+    <div class="toggle" onclick="showForgotPassword()">فراموشی رمز عبور؟</div>
+    <div id="forgot-password-form" style="display:none;">
+      <input type="email" id="forgot-email" placeholder="ایمیل خود را وارد کنید" />
+      <button onclick="sendPasswordResetLink()">ارسال لینک بازیابی</button>
+      <p id="forgot-password-message"></p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      sendEmailVerification,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail
+    } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD_Zyp4-it4jqoDDKoHQYkJZcW6wpgzNIw",
+      authDomain: "rasandesign-c13b0.firebaseapp.com",
+      projectId: "rasandesign-c13b0",
+      storageBucket: "rasandesign-c13b0.appspot.com",
+      messagingSenderId: "704936216056",
+      appId: "1:704936216056:web:xxxxxxx"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.handleSignup = async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const msg = document.getElementById("message");
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(userCredential.user);
+        msg.style.color = "green";
+        msg.innerText = "ایمیل تایید برای شما ارسال شد. لطفاً ایمیل خود را چک کنید و سپس وارد شوید.";
+        toggleForm(true);
+      } catch (error) {
+        msg.innerText = error.message;
+      }
+    };
+
+    window.handleLogin = async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const msg = document.getElementById("message");
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        if (userCredential.user.emailVerified) {
+          window.location.href = "/dashboard.html";
+        } else {
+          msg.innerText = "لطفاً ابتدا ایمیل خود را تایید کنید.";
+        }
+      } catch (error) {
+        msg.innerText = error.message;
+      }
+    };
+
+    window.toggleForm = (forceLogin = false) => {
+      const isLogin = forceLogin || document.getElementById("login-btn").style.display === "none";
+      document.getElementById("form-title").innerText = isLogin ? "ورود" : "ثبت‌نام";
+      document.getElementById("signup-btn").style.display = isLogin ? "none" : "inline-block";
+      document.getElementById("login-btn").style.display = isLogin ? "inline-block" : "none";
+      document.getElementById("message").innerText = "";
+      document.querySelector(".toggle").innerText = isLogin ? "حساب ندارید؟ ثبت‌نام کنید" : "قبلاً ثبت‌نام کرده‌اید؟ وارد شوید";
+    };
+
+    // نمایش فرم فراموشی رمز عبور
+    window.showForgotPassword = () => {
+      document.getElementById("forgot-password-form").style.display = "block";
+    };
+
+    // ارسال لینک بازیابی رمز عبور
+    window.sendPasswordResetLink = async () => {
+      const email = document.getElementById("forgot-email").value;
+      const msg = document.getElementById("forgot-password-message");
+      try {
+        await sendPasswordResetEmail(auth, email);
+        msg.style.color = "green";
+        msg.innerText = "لینک بازیابی رمز عبور به ایمیل شما ارسال شد.";
+      } catch (error) {
+        msg.innerText = error.message;
+      }
+    };
+  </script>
+</body>
+</html>
