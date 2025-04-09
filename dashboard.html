@@ -89,17 +89,17 @@
     const auth = firebase.auth();
 
     auth.onAuthStateChanged((user) => {
-      if (user && user.emailVerified) {
+      if (user) {
         document.getElementById("welcome-msg").innerText =
           `سلام ${user.email} 👋 خوش اومدی!`;
       } else {
-        window.location.href = "/login.html";
+        window.location.href = "login.html"; // مسیر نسبی برای GitHub Pages یا اجرای محلی
       }
     });
 
     function logout() {
       auth.signOut().then(() => {
-        window.location.href = "/index.html";
+        window.location.href = "index.html"; // مسیر نسبی برای بازگشت به صفحه اصلی
       });
     }
   </script>
