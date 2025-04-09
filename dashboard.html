@@ -62,7 +62,7 @@
 <body>
   <header>
     <h1>🎉 خوش آمدید به پنل کاربری راسان دیزاین</h1>
-    <h2>متسفانه این صحفه هنوز درست نشده است و هنوز امکان استفاده از امکانات ما به صورت وب وجود ندارد.</h2>
+    <h2>متاسفانه این صفحه هنوز درست نشده است و هنوز امکان استفاده از امکانات ما به صورت وب وجود ندارد.</h2>
     <h4>جهت استفاده از خدمات ما تماس بگیرید (09032047444)</h4>
   </header>
 
@@ -73,10 +73,9 @@
     </div>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyD_Zyp4-it4jqoDDKoHQYkJZcW6wpgzNIw",
       authDomain: "rasandesign-c13b0.firebaseapp.com",
@@ -86,24 +85,23 @@
       appId: "1:704936216056:web:xxxxxx"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-    onAuthStateChanged(auth, (user) => {
+    auth.onAuthStateChanged((user) => {
       if (user && user.emailVerified) {
         document.getElementById("welcome-msg").innerText =
           `سلام ${user.email} 👋 خوش اومدی!`;
       } else {
-        // اگر کاربر وارد نشده یا ایمیل تایید نشده
         window.location.href = "/login.html";
       }
     });
 
-    window.logout = () => {
-      signOut(auth).then(() => {
+    function logout() {
+      auth.signOut().then(() => {
         window.location.href = "/index.html";
       });
-    };
+    }
   </script>
 </body>
 </html>
