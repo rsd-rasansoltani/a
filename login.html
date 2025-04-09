@@ -64,6 +64,7 @@
   <button onclick="handleLogin()" id="login-btn">ورود</button>
   <p id="message"></p>
   <div class="toggle" onclick="toggleForm()">قبلاً ثبت‌نام کرده‌اید؟ وارد شوید</div>
+  <div class="forgot" onclick="forgotPassword()">رمز عبور را فراموش کرده‌اید؟</div>
 </div>
 
 <script>
@@ -165,6 +166,25 @@
       msgElement.innerText = "خطا: " + error.message;
     }
   }
+  function forgotPassword() {
+  const email = document.getElementById("email").value;
+  const msg = document.getElementById("message");
+
+  if (!email) {
+    msg.innerText = "لطفاً ابتدا ایمیل خود را وارد کنید.";
+    return;
+  }
+
+  auth.sendPasswordResetEmail(email)
+    .then(() => {
+      msg.style.color = "green";
+      msg.innerText = "📩 ایمیل بازیابی رمز عبور برای شما ارسال شد.";
+    })
+    .catch((error) => {
+      showFriendlyError(error, msg);
+    });
+}
+
 
   // با فراخوانی تابع toggleForm(false) پیش‌فرض فرم ورود نمایش داده می‌شود
   toggleForm(true); 
