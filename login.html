@@ -156,7 +156,7 @@
 
   function showFriendlyError(error, msgElement) {
     if (error.code === "auth/network-request-failed") {
-      msgElement.innerHTML = `❌ اتصال به سرور برقرار نشد.<br><strong> لطفا یا به DNS یا به VPN وصی شوید <br>	</strong>	<a href="DNS-img.png"> <b>1.1.1.1</b> و <b>1.0.0.1</b><br></a>`;
+      msgElement.innerHTML = `❌ اتصال به سرور برقرار نشد.<br><b> لطفا یا به DNS یا به VPN وصی شوید <b>	`;
     } else if (error.code === "auth/invalid-login-credentials") {
       msgElement.innerText = "❌ ایمیل یا رمز عبور اشتباه است.";
     } else if (error.code === "auth/email-already-in-use") {
