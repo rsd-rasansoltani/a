@@ -100,14 +100,70 @@
 					<div class="col-md-8 col-md-offset-2 text-center">
 						<div class="display-t">
 							<div class="display-tc animate-box" data-animate-effect="fadeIn">
-								<h1>Rasandesign</h1>
-								<h2>مرجع وب نویسی و برنامه نویسی <a href="http://Rasandesign.ir/" target="_blank"> گروه راسان دیزاین</a><br> راسان دیزاین با ارائه راهکارهای نوین در توسعه وب و نرم‌افزار، مسیر رشد و پیشرفت کسب‌وکارهای دیجیتال را هموار می‌سازد.</h2>
+								<h1>Zangigroup</h1>
+								<h2>مرجع وب نویسی و برنامه نویسی <a href="http://Rasandesign.ir/" target="_blank"> گروه زنگی راسان دیزاین</a><br> راسان دیزاین با ارائه راهکارهای نوین در توسعه وب و نرم‌افزار، مسیر رشد و پیشرفت کسب‌وکارهای دیجیتال را هموار می‌سازد.</h2>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</header>
+
+		<div id="stickyAd" onclick="window.open('https://rasandesign.ir', '_blank')">
+  <img src="https://rasandesign.ir/a/pics/logo2.png" alt="Rasan Design" />
+  <p>ورود به سایت اصلی راسان دیزاین</p>
+  <span id="closeAd" onclick="event.stopPropagation(); document.getElementById('stickyAd').style.display='none';">×</span>
+</div>
+
+<style>
+  #stickyAd {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 500px;
+    height: auto;
+    background: white;
+    border: 2px solid #ccc;
+    z-index: 9999;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    padding: 10px;
+    text-align: center;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  #stickyAd:hover {
+    transform: scale(1.05);
+  }
+
+  #stickyAd img {
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  #stickyAd p {
+    margin: 10px 0 0;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+  }
+
+  #closeAd {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    color: #888;
+  }
+
+  #closeAd:hover {
+    color: red;
+  }
+</style>
+
 		<!--end header -->
 
 		<!--start top 3 -->
